@@ -5,7 +5,7 @@ const exphbs = require('express-handlebars');
 const Todo = require('./models/todo')
 const bodyParser = require('body-parser')
 const methOverride = require('method-override')
-
+const routes = require('./routes')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
@@ -25,13 +25,8 @@ db.once('open', () => {
   console.log('mongodb connected')
 })
 
-app.get('/', (req, res) => {
-  Todo.find()
-    .lean()
-    .sort({ _id: 'asc' })
-    .then(todos => res.render('index', { todos }))
-    .catch(error => console.error(error))
-})
+app.use(routes)
+
 app.get('/todos/new', (req, res) => {
   return res.render('new')
 })
