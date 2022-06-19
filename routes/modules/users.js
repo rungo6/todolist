@@ -1,4 +1,6 @@
 const express = require('express')
+const req = require('express/lib/request')
+const res = require('express/lib/response')
 const router = express.Router()
 
 const passport = require('passport')
@@ -43,5 +45,11 @@ router.post('/register', (req, res) => {
   })
 
 })
+
+router.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/users/login')
+})
+
 
 module.exports = router
