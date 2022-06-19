@@ -8,7 +8,10 @@ const todos = require('./modules/todos')
 
 const users = require('./modules/users')
 
-router.use('/', home)
-router.use('/todos', todos)
+const { authenticator } = require('../middleware/auth')  // 掛載 middleware
+
+router.use('/todos', authenticator, todos)
 router.use('/users', users)
+router.use('/', authenticator, home)
+
 module.exports = router
