@@ -4,7 +4,8 @@ const bodyParser = require('body-parser')
 const methOverride = require('method-override')
 const routes = require('./routes')
 const session = require('express-session')
-const usePassport = require('./config/passport')
+const usePassport = require('./config/passport');
+const res = require('express/lib/response');
 
 require('./config/mongoose')
 
@@ -21,6 +22,12 @@ app.use(session({
 }))
 
 usePassport(app)
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated
+  res.locals.user = req.user
+  next()
+})
 
 app.use(routes)
 
